@@ -1,0 +1,86 @@
+﻿@page
+@model BuiPhuocLocRazorPages.Pages.Admin.ReportModel
+@{
+    var accountRole = HttpContext.Session.GetInt32("AccountRole");
+
+    if (accountRole != 0)
+    {
+        Response.Redirect("/Error");
+
+    }
+}
+
+<h1>Report by Date Range</h1>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="StartDate">Start Date</label>
+        <input asp-for="StartDate" type="date" class="form-control" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EndDate">End Date</label>
+        <input asp-for="EndDate" type="date" class="form-control" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Generate Report</button>
+</form>
+
+@if (Model.NewsArticles.Count > 0)
+{
+    <h2>Report Results</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Headline</th>
+                <th>Created Date</th>
+                <th>Created By</th>
+                <th>Modified Date</th>
+                <th>Updated By</th>
+                <th>Category Name</th>
+                <th>News Status</th>
+                <th>News Source</th>
+                <th>Tags</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var article in Model.NewsArticles)
+            {
+                <tr>
+                    <td>@article.NewsArticleId</td>
+                    <td>@article.NewsTitle</td>
+                    <td>@article.Headline</td>
+                    <td>@article.CreatedDate?.ToString("yyyy-MM-dd")</td>
+                    <td>@article.CreatedBy?.AccountName</td>
+                    <td>@article.ModifiedDate?.ToString("yyyy-MM-dd")</td>
+                    <td>@article.UpdatedById</td>
+                    <td>@article.Category?.CategoryName</td>
+                    <td>@(article.NewsStatus == true ? "Active" : "Inactive")</td>
+                    <td>@article.NewsSource</td>
+                    <td>
+                        @if (article.Tags.Any())
+                        {
+                            @foreach (var tag in article.Tags)
+                            {
+                                <span class="badge bg-primary">@tag.TagName</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-muted">No tags available</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

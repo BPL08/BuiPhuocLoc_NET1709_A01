@@ -1,0 +1,16 @@
+﻿@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Access Denied</h1>
+<h2 class="text-danger">You do not have permission to view this page.</h2>
+
+<p>
+    Please log in with the appropriate credentials to access this page.
+</p>
+
+<div>
+    <a asp-page="/Login" class="btn btn-primary">Go to Login</a>
+</div>

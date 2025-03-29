@@ -1,0 +1,72 @@
+﻿@page "{pageNumber:int?}"
+@model BuiPhuocLocRazorPages.Pages.Staff.MyArticlesModel
+@{
+    var accountRole = HttpContext.Session.GetInt32("AccountRole");
+
+    if (accountRole != 1)
+    {
+        Response.Redirect("/Error");
+    }
+}
+
+<h1>My Articles</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Headline</th>
+            <th>Created Date</th>
+            <th>Created By</th>
+            <th>Modified Date</th>
+            <th>Updated By</th>
+            <th>Category Name</th>
+            <th>News Status</th>
+            <th>News Source</th>
+            <th>Tags</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var article in Model.NewsArticles)
+        {
+            <tr>
+                <td>@article.NewsArticleId</td>
+                <td>@article.NewsTitle</td>
+                <td>@article.Headline</td>
+                <td>@article.CreatedDate?.ToString("yyyy-MM-dd")</td>
+                <td>@article.CreatedBy?.AccountName</td>
+                <td>@article.ModifiedDate?.ToString("yyyy-MM-dd")</td>
+                <td>@article.UpdatedById</td>
+                <td>@article.Category?.CategoryName</td>
+                <td>@(article.NewsStatus == true ? "Active" : "Inactive")</td>
+                <td>@article.NewsSource</td>
+                <td>
+                    @if (article.Tags.Any())
+                    {
+                        @foreach (var tag in article.Tags)
+                        {
+                            <span class="badge bg-primary">@tag.TagName</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No tags available</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="pagination">
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        <a asp-page="./MyArticles" asp-route-pageNumber="@i" class="btn btn-outline-primary @(i == Model.CurrentPage ? "active" : "")">
+            @i
+        </a>
+    }
+</div>
+<div class="mt-3">
+    <a asp-page="./NavigatePage">Back</a>
+</div>

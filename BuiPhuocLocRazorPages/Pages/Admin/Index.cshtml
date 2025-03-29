@@ -1,0 +1,19 @@
+﻿@page
+@model BuiPhuocLocRazorPages.Pages.Admin.IndexModel
+@{
+    var accountRole = HttpContext.Session.GetInt32("AccountRole");
+
+    if (accountRole != 0)
+    {
+        Response.Redirect("/Error");
+       
+    }
+
+}
+
+<h1>Admin Dashboard</h1>
+
+<div class="d-flex justify-content-center mt-5">
+    <a asp-page="./Report" class="btn btn-primary mx-2">View Report</a>
+    <a asp-page="./ManageAccount" class="btn btn-secondary mx-2">Manage Accounts</a>
+</div>

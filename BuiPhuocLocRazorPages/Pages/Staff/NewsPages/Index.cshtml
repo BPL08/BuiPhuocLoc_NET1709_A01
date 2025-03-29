@@ -1,0 +1,96 @@
+﻿@page
+@model BuiPhuocLocRazorPages.Pages.Staff.NewsPages.IndexModel
+@{
+    var accountRole = HttpContext.Session.GetInt32("AccountRole");
+
+    if (accountRole != 1)
+    {
+        Response.Redirect("/Error");
+    }
+}
+
+<h1>News Articles</h1>
+
+<form method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search by title or headline" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+<a asp-page="./Delete" class="btn btn-danger btn-sm">Delete</a>
+<a asp-page="./Edit" class="btn btn-danger btn-sm">Edit</a>
+<a asp-page="./Create" class="btn btn-success mb-3">Create New Article</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Headline</th>
+            <th>Created Date</th>
+            <th>Created By</th>
+            <th>Modified Date</th>
+            <th>Updated By</th>
+            <th>Category Name</th>
+            <th>News Status</th>
+            <th>News Source</th>
+            <th>News Content</th>
+            <th>Tags</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var article in Model.NewsArticles)
+        {
+            <tr>
+                <td>@article.NewsArticleId</td>
+                <td>@article.NewsTitle</td>
+                <td>@article.Headline</td>
+                <td>@article.CreatedDate?.ToString("yyyy-MM-dd")</td>
+                <td>@article.CreatedBy?.AccountName</td>
+                <td>@article.ModifiedDate?.ToString("yyyy-MM-dd")</td>
+                <td>
+                    @if (article.UpdatedById.HasValue && Model.UpdatedByNames.ContainsKey(article.UpdatedById.Value))
+                    {
+                        @Model.UpdatedByNames[article.UpdatedById.Value]
+                    }
+                    else
+                    {
+                        <span class="text-muted">Unknown</span>
+                    }
+                </td>
+                <td>@article.Category?.CategoryName</td>
+                <td>@(article.NewsStatus == true ? "Active" : "Inactive")</td>
+                <td>@article.NewsSource</td>
+                <td>@article.NewsContent</td>
+                <td>
+                    @if (article.Tags.Any())
+                    {
+                        @foreach (var tag in article.Tags)
+                        {
+                            <span class="badge bg-primary">@tag.TagName</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No tags available</span>
+                    }
+                </td>
+               
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="pagination">
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        <a asp-page="./Index" asp-route-pageNumber="@i" class="btn btn-outline-primary @(i == Model.CurrentPage ? "active" : "")">
+            @i
+        </a>
+    }
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script src="/js/site.js"></script>

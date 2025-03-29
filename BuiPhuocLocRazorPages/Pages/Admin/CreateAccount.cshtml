@@ -1,0 +1,64 @@
+﻿@page
+@model BuiPhuocLocRazorPages.Pages.Admin.CreateAccountModel
+@{
+    var accountRole = HttpContext.Session.GetInt32("AccountRole");
+
+    if (accountRole != 0) 
+    {
+        Response.Redirect("/Error");
+       
+    }
+
+}
+<h1>Create Account</h1>
+
+<a asp-page="/Admin/ManageAccount" class="btn btn-success mb-3">Back</a>
+
+<form method="post">
+    <div class="form-group">
+        <label>Account Id:</label>
+        <input type="number" min="1" asp-for="Account.AccountId" class="form-control" required />
+        <span asp-validation-for="Account.AccountId" class="text-danger">  </span>
+    </div>
+    <div class="form-group">
+        <label>Account Name:</label>
+        <input type="text" asp-for="Account.AccountName" class="form-control" required />
+        <span asp-validation-for="Account.AccountName" class="text-danger">  </span>
+    </div>
+
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="email" asp-for="Account.AccountEmail" class="form-control" required />
+        <span asp-validation-for="Account.AccountEmail" class="text-danger">  </span>
+    </div>
+
+    <div class="form-group">
+        <label>Password:</label>
+        <input type="password" asp-for="Account.AccountPassword" class="form-control" required />
+        <span asp-validation-for="Account.AccountPassword" class="text-danger">  </span>
+    </div>
+
+    <div class="form-group">
+        <label>Role:</label>
+        <select asp-for="Account.AccountRole" class="form-control" required>
+            <option value="1">Staff</option>
+            <option value="2">Lecturer</option>
+            
+        </select>
+        <span asp-validation-for="Account.AccountRole" class="text-danger">  </span>
+    </div>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-success"
+                onclick="return confirm('Are you sure you want to create this account?')">
+            Create
+        </button>
+        <a asp-page="/Admin/ManageAccounts" class="btn btn-secondary">Cancel</a>
+    </div>
+
+</form>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger mt-3">@Model.ErrorMessage</div>
+}

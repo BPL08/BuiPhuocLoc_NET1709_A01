@@ -1,0 +1,73 @@
+﻿@page
+@model BuiPhuocLocRazorPages.Pages.Staff.NewsPages.DeleteModel
+@{
+    var accountRole = HttpContext.Session.GetInt32("AccountRole");
+
+    if (accountRole != 1)
+    {
+        Response.Redirect("/Error");
+    }
+}
+<h1>Delete News Article</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="deleteArticleDropdown">Select an article to delete:</label>
+        <select id="deleteArticleDropdown" name="SelectedArticleId" class="form-control" asp-for="SelectedArticleId" asp-items="Model.DeleteArticleDropdown">
+            <option value="">-- Select an article --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">View Details</button>
+
+    @if (Model.SelectedArticle != null)
+    {
+        <div class="mt-3">
+            <h3>Article Details</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Id</th>
+                    <td>@Model.SelectedArticle.NewsArticleId</td>
+                </tr>
+                <tr>
+                    <th>Title</th>
+                    <td>@Model.SelectedArticle.NewsTitle</td>
+                </tr>
+                <tr>
+                    <th>Headline</th>
+                    <td>@Model.SelectedArticle.Headline</td>
+                </tr>
+                <tr>
+                    <th>Content</th>
+                    <td>@Model.SelectedArticle.NewsContent</td>
+                </tr>
+                <tr>
+                    <th>Category</th>
+                    <td>@Model.SelectedArticle.Category?.CategoryName</td>
+                </tr>
+                <tr>
+                    <th>Tags</th>
+                    <td>
+                        @if (Model.SelectedArticle.Tags.Any())
+                        {
+                            @foreach (var tag in Model.SelectedArticle.Tags)
+                            {
+                                <span class="badge bg-primary">@tag.TagName</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-muted">No tags available</span>
+                        }
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" asp-page-handler="Delete" class="btn btn-danger">Delete</button>
+        </div>
+    }
+</form>
+
+<a asp-page="./Index" class="btn btn-secondary mt-3">Cancel</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script src="/js/site.js"></script>

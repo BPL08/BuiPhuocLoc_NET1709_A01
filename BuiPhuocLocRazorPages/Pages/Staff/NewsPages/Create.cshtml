@@ -1,0 +1,89 @@
+﻿@page
+@model BuiPhuocLocRazorPages.Pages.Staff.NewsPages.CreateModel
+
+@{
+    var accountRole = HttpContext.Session.GetInt32("AccountRole");
+
+    if (accountRole != 1)
+    {
+        Response.Redirect("/Error");
+    }
+}
+<form method="post">
+    <div class="form-group">
+        <label asp-for="NewsArticle.NewsArticleId">ID</label>
+        <input asp-for="NewsArticle.NewsArticleId" class="form-control" />
+        <span asp-validation-for="NewsArticle.NewsArticleId" class="text-danger"></span>
+
+       
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewsArticle.NewsTitle">Title</label>
+        <input asp-for="NewsArticle.NewsTitle" class="form-control" />
+        <span asp-validation-for="NewsArticle.NewsTitle" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewsArticle.Headline">Headline</label>
+        <input asp-for="NewsArticle.Headline" class="form-control" />
+        <span asp-validation-for="NewsArticle.Headline" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewsArticle.NewsContent">Content</label>
+        <textarea asp-for="NewsArticle.NewsContent" rows="5" class="form-control"></textarea>
+        <span asp-validation-for="NewsArticle.NewsContent" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewsArticle.NewsSource">Source</label>
+        <textarea asp-for="NewsArticle.NewsSource" rows="5" class="form-control"></textarea>
+        <span asp-validation-for="NewsArticle.NewsSource" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedCategoryId">Category</label>
+        <select asp-for="SelectedCategoryId" asp-items="Model.CategoryList" class="form-control">
+            <option value="">-- Select Category --</option>
+        </select>
+        <span asp-validation-for="SelectedCategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Tags</label>
+        <div>
+            @foreach (var tag in Model.TagList)
+            {
+                <div class="form-check">
+                    <input type="checkbox"
+                           name="SelectedTagIds"
+                           value="@tag.Value"
+                           class="form-check-input"
+                           id="tag_@tag.Value" />
+                    <label class="form-check-label" for="tag_@tag.Value">@tag.Text</label>
+                </div>
+            }
+        </div>
+        <span asp-validation-for="SelectedTagIds" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewsArticle.NewsStatus">Status</label>
+        <select asp-for="NewsArticle.NewsStatus" class="form-control">
+            <option value="">-- Select Status --</option>
+            <option value="true">ACTIVE</option>
+            <option value="false">INACTIVE</option>
+        </select>
+        <span asp-validation-for="NewsArticle.NewsStatus" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to create this article?');">Create</button>
+    <a asp-page="./Index" class="btn btn-secondary ml-2">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script src="/js/site.js"></script>
+}

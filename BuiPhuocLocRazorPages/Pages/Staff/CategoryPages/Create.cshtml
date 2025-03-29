@@ -1,0 +1,55 @@
+﻿@page
+@model BuiPhuocLocRazorPages.Pages.Staff.CategoryPages.CreateModel
+
+@{
+    var accountRole = HttpContext.Session.GetInt32("AccountRole");
+
+    if (accountRole != 1)
+    {
+        Response.Redirect("/Error");
+    }
+}
+
+<h2>Create New Category</h2>
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-dark">Create New Category</h2>
+
+    <form method="post" class="row g-3">
+        <div class="col-md-6">
+            <label asp-for="Category.CategoryName" class="form-label fw-bold">Category Name</label>
+            <input asp-for="Category.CategoryName" class="form-control" required />
+            <span asp-validation-for="Category.CategoryName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Category.CategoryDesciption" class="form-label fw-bold">Description</label>
+            <textarea asp-for="Category.CategoryDesciption" class="form-control" required rows="3"></textarea>
+            <span asp-validation-for="Category.CategoryDesciption" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Category.ParentCategoryId" class="form-label fw-bold">Parent Category</label>
+            <select asp-for="Category.ParentCategoryId" class="form-select" asp-items="@Model.ParentCategories">
+                <option value="">-- Select Parent Category (Optional) --</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Category.IsActive" class="form-label fw-bold">Status</label>
+            <select asp-for="Category.IsActive" class="form-select">
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+            </select>
+        </div>
+
+        <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-primary me-2" onclick="return confirm('Are you sure you want to update this category?');">Create</button>
+            <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

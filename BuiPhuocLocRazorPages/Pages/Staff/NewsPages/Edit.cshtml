@@ -1,0 +1,108 @@
+﻿@page
+@model BuiPhuocLocRazorPages.Pages.Staff.NewsPages.EditModel
+
+@{
+    var accountRole = HttpContext.Session.GetInt32("AccountRole");
+
+    if (accountRole != 1)
+    {
+        Response.Redirect("/Error");
+    }
+}
+
+<h1>Edit News Article</h1>
+
+<!-- Dropdown to select an article -->
+<form method="post" asp-page-handler="Load">
+    <div class="form-group">
+        <label for="articleDropdown">Select an article to edit:</label>
+        <select id="articleDropdown" name="SelectedArticleId" class="form-control" asp-for="SelectedArticleId" asp-items="Model.ArticleDropdown">
+            <option value="">-- Select an article --</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Load Article</button>
+</form>
+
+<!-- Form to edit the selected article -->
+@if (Model.NewsArticle != null && !string.IsNullOrEmpty(Model.NewsArticle.NewsArticleId))
+{
+    <form method="post" asp-page-handler="Save">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="NewsArticle.NewsArticleId" />
+
+        <div class="form-group">
+            <label asp-for="NewsArticle.NewsTitle" class="control-label"></label>
+            <input asp-for="NewsArticle.NewsTitle" class="form-control" />
+            <span asp-validation-for="NewsArticle.NewsTitle" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NewsArticle.Headline" class="control-label"></label>
+            <input asp-for="NewsArticle.Headline" class="form-control" />
+            <span asp-validation-for="NewsArticle.Headline" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NewsArticle.NewsContent" class="control-label"></label>
+            <textarea asp-for="NewsArticle.NewsContent" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="NewsArticle.NewsContent" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NewsArticle.NewsSource" class="control-label"></label>
+            <input asp-for="NewsArticle.NewsSource" class="form-control" />
+            <span asp-validation-for="NewsArticle.NewsSource" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NewsArticle.CategoryId" class="control-label"></label>
+            <select asp-for="NewsArticle.CategoryId" class="form-control" asp-items="@Model.CategoryList"></select>
+            <span asp-validation-for="NewsArticle.CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NewsArticle.NewsStatus" class="control-label"></label>
+            <select asp-for="NewsArticle.NewsStatus" class="form-control">
+                <option value="false">Inactive</option>
+                <option value="true">Active</option>
+            </select>
+            <span asp-validation-for="NewsArticle.NewsStatus" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Tags</label>
+            <div class="row">
+                @foreach (var tag in Model.TagList)
+                {
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input"
+                                   name="SelectedTagIds"
+                                   value="@tag.Value"
+                                   checked="@(Model.SelectedTagIds.Contains(int.Parse(tag.Value)) ? "checked" : null)" />
+                            <label class="form-check-label">@tag.Text</label>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <a asp-page="./Index" class="btn btn-secondary ml-2">Cancel</a>
+        </div>
+    </form>
+}
+
+<!-- Success and error messages -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script src="/js/site.js"></script>

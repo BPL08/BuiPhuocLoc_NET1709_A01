@@ -1,0 +1,58 @@
+﻿@page
+@model BuiPhuocLocRazorPages.Pages.Admin.ManageAccountModel
+@{
+    var accountRole = HttpContext.Session.GetInt32("AccountRole");
+
+    if (accountRole != 0)
+    {
+        Response.Redirect("/Error");
+
+    }
+}
+<h1>Manage Accounts</h1>
+
+<form method="get">
+    <input type="text" placeholder="Search by Email" asp-for="SearchTerm" />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<a asp-page="/Admin/CreateAccount" class="btn btn-success mb-3">Create New Account</a>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var account in Model.Accounts)
+        {
+            <tr>
+                <td>@account.AccountId</td>
+                <td>@account.AccountName</td>
+                <td>@account.AccountEmail</td>
+                <td>
+                    @(account.AccountRole == 1 ? "Admin" :
+                        account.AccountRole == 2 ? "Staff" : "Lecturer")
+                </td>
+                
+                <td>
+                    <a asp-page="/Admin/UpdateAccount" asp-route-id="@account.AccountId" class="btn btn-warning">Edit</a>
+
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@account.AccountId">
+                        <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Are you sure you want to delete this account?')">
+                            Delete
+                        </button>
+                    </form>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
