@@ -34,7 +34,7 @@ namespace BuiPhuocLocRazorPages.Pages.Admin
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid) return Page();
+            
             if (!await _repo.AccountExistsAsync(Account.AccountId))
             {
                 ErrorMessage = "Account no longer exists.";

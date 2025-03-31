@@ -14,6 +14,7 @@
 <form method="get">
     <input type="text" placeholder="Search by Email" asp-for="SearchTerm" />
     <button type="submit" class="btn btn-primary">Search</button>
+    <a asp-page="/Admin/Index" class="btn btn-secondary">Back</a>
 </form>
 
 <a asp-page="/Admin/CreateAccount" class="btn btn-success mb-3">Create New Account</a>
@@ -37,8 +38,8 @@
                 <td>@account.AccountName</td>
                 <td>@account.AccountEmail</td>
                 <td>
-                    @(account.AccountRole == 1 ? "Admin" :
-                        account.AccountRole == 2 ? "Staff" : "Lecturer")
+                    @(account.AccountRole == 1 ? "Staff" :
+                         "Lecturer")
                 </td>
                 
                 <td>

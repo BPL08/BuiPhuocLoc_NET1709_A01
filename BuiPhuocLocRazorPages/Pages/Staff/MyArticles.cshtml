@@ -10,7 +10,7 @@
 }
 
 <h1>My Articles</h1>
-
+<a asp-page="/Staff/NavigatePage" class="btn btn-secondary">Back</a>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -37,7 +37,16 @@
                 <td>@article.CreatedDate?.ToString("yyyy-MM-dd")</td>
                 <td>@article.CreatedBy?.AccountName</td>
                 <td>@article.ModifiedDate?.ToString("yyyy-MM-dd")</td>
-                <td>@article.UpdatedById</td>
+                <td>
+                    @if (Model.UpdatedByNames.ContainsKey(article.UpdatedById ?? 0))
+                    {
+                        @Model.UpdatedByNames[article.UpdatedById.Value]
+                    }
+                    else
+                    {
+                        <span class="text-muted">Unknown</span>
+                    }
+                </td>
                 <td>@article.Category?.CategoryName</td>
                 <td>@(article.NewsStatus == true ? "Active" : "Inactive")</td>
                 <td>@article.NewsSource</td>

@@ -3,12 +3,20 @@
 @{
     var accountRole = HttpContext.Session.GetInt32("AccountRole");
 
-    if (accountRole != 1) 
+    if (accountRole != 1)
     {
         Response.Redirect("/Error");
     }
 }
 <h2>Update Profile</h2>
+<a asp-page="Staff/NavigatePage" class="btn btn-secondary">Back</a>
+
+<!-- Current Account Information Section -->
+<div class="alert alert-info mt-3">
+    <h4>Current Account Information</h4>
+    <p><strong>Name:</strong> @Model.AccountName</p>
+    <p><strong>Email:</strong> @Model.AccountEmail</p>
+</div>
 
 <form method="post">
     <div class="form-group">
@@ -28,9 +36,11 @@
     </div>
     <button type="submit" class="btn btn-primary">Update</button>
 </form>
+
 <div class="mt-3">
     <a asp-page="./NavigatePage">Back</a>
 </div>
+
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
 {
     <div class="alert alert-danger mt-3">

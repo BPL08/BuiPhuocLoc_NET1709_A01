@@ -31,7 +31,7 @@ namespace BuiPhuocLocRazorPages.Pages.Admin
         private bool IsAdmin()
         {
             var role = HttpContext.Session.GetInt32("AccountRole");
-            return role == 1;
+            return role == 0;
         }
 
         public async Task<IActionResult> OnGetAsync()

@@ -28,18 +28,14 @@
         <span asp-validation-for="Account.AccountEmail" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label>Password:</label>
-        <input type="password" asp-for="Account.AccountPassword" class="form-control" required />
-        <span asp-validation-for="Account.AccountPassword" class="text-danger"></span>
-    </div>
+   
 
     <div class="form-group">
         <label>Role:</label>
         <select asp-for="Account.AccountRole" class="form-control"  required>
-            <option value="1">Admin</option>
-            <option value="2">Staff</option>
-            <option value="3">Lecturer</option>
+           
+            <option value="1">Staff</option>
+            <option value="2">Lecturer</option>
         </select>
         <span asp-validation-for="Account.AccountRole" class="text-danger"></span>
     </div>

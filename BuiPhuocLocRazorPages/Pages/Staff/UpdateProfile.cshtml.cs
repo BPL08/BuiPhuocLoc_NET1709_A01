@@ -14,7 +14,7 @@ namespace BuiPhuocLocRazorPages.Pages.Staff
         }
 
         [BindProperty]
-        public short AccountId { get; private set; } // Changed to short
+        public short AccountId { get;  set; } // Changed to short
 
         [BindProperty]
         public string AccountName { get; set; }
@@ -32,7 +32,7 @@ namespace BuiPhuocLocRazorPages.Pages.Staff
             var accountId = HttpContext.Session.GetInt32("AccountId");
             if (accountId.HasValue)
             {
-                AccountId = (short)accountId.Value; // Safely cast to short
+                AccountId = (short)accountId.Value; 
                 var account = await _accountRepository.GetAccountById(AccountId);
                 if (account != null)
                 {
@@ -52,6 +52,17 @@ namespace BuiPhuocLocRazorPages.Pages.Staff
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var accountId = HttpContext.Session.GetInt32("AccountId");
+            if (accountId.HasValue)
+            {
+                AccountId = (short)accountId.Value;
+            }
+            else
+            {
+                ErrorMessage = "Account ID is missing or invalid.";
+                return Page();
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -64,7 +75,6 @@ namespace BuiPhuocLocRazorPages.Pages.Staff
                 return Page();
             }
 
-            // Update only the allowed fields
             account.AccountName = AccountName;
             account.AccountEmail = AccountEmail;
             account.AccountPassword = AccountPassword;
@@ -72,7 +82,7 @@ namespace BuiPhuocLocRazorPages.Pages.Staff
             var result = await _accountRepository.UpdateProfileAsync(account);
             if (result)
             {
-                return RedirectToPage("ProfileUpdated");
+                return RedirectToPage("UpdateProfile");
             }
             else
             {
@@ -80,5 +90,6 @@ namespace BuiPhuocLocRazorPages.Pages.Staff
                 return Page();
             }
         }
+
     }
 }

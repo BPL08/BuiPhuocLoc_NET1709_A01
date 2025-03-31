@@ -23,10 +23,12 @@
 <div class="mb-3">
     <a asp-page="./Create" class="btn btn-primary">Create New Category</a>
 </div>
-
+<a asp-page="/Staff/NavigatePage" class="btn btn-secondary">Back</a>
 <form method="get" class="search-form">
     <input type="text" name="SearchTerm" value="@Model.SearchTerm" placeholder="Search categories..." class="search-input" />
     <button type="submit" class="search-button">Search</button>
+  
+
 </form>
 
 @if (Model.Categories.Any())

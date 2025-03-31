@@ -10,11 +10,13 @@
 }
 
 <h1>News Articles</h1>
-
+<a asp-page="/Staff/NavigatePage" class="btn btn-secondary">Back</a>
 <form method="get" class="mb-3">
     <div class="input-group">
         <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search by title or headline" />
         <button type="submit" class="btn btn-primary">Search</button>
+       
+
     </div>
 </form>
 
